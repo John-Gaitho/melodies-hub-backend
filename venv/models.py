@@ -42,3 +42,15 @@ class Playlist(db.Model):
 
     def __repr__(self):
         return f"<Playlist {self.name}>"
+
+# Playlist-Song many-to-many relationship model
+class PlaylistSong(db.Model):
+    __tablename__ = 'playlist_song'
+
+    id = db.Column(db.Integer, primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'), nullable=False)
+    song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
+    order = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Integer)
+
+    
