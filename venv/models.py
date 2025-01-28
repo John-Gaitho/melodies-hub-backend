@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 
+# Initializing the database
 db = SQLAlchemy
+
+# User model
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -8,17 +11,8 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
-# Song model
-class Song(db.Model):
-    __tablename__ = 'song'
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    artist = db.Column(db.String(100), nullable=False)
-    genre = db.Column(db.String(50))
-    release_date = db.Column(db.Date)
-    duration = db.Column(db.Integer)
-
+    def __repr__(self):
+        return f"<User {self.username}>"
 
 # Song model
 class Song(db.Model):
@@ -30,6 +24,9 @@ class Song(db.Model):
     genre = db.Column(db.String(50))
     release_date = db.Column(db.Date)
     duration = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Song {self.title} by {self.artist}>"
 
 # Playlist model
 class Playlist(db.Model):
@@ -53,4 +50,5 @@ class PlaylistSong(db.Model):
     order = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Integer)
 
-    
+    playlist = db.relationship('Playlist', backref='playlist_songs', lazy=True)
+    song = db.relationship('Song', backref='playlist_songs', lazy=True)
