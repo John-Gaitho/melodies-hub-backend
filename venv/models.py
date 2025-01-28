@@ -19,3 +19,26 @@ class Song(db.Model):
     release_date = db.Column(db.Date)
     duration = db.Column(db.Integer)
 
+
+# Song model
+class Song(db.Model):
+    __tablename__ = 'song'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    artist = db.Column(db.String(100), nullable=False)
+    genre = db.Column(db.String(50))
+    release_date = db.Column(db.Date)
+    duration = db.Column(db.Integer)
+
+# Playlist model
+class Playlist(db.Model):
+    __tablename__ = 'playlist'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='playlists', lazy=True)
+
+    def __repr__(self):
+        return f"<Playlist {self.name}>"
