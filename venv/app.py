@@ -34,3 +34,9 @@ def create_user():
 def get_users():
     users = User.query.all()
     return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
+
+# to get a single user by ID
+@app.route('/users/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get_or_404(id)
+    return jsonify({'id': user.id, 'username': user.username, 'email': user.email})
