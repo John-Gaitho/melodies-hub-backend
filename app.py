@@ -4,7 +4,6 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 
 
-
 # Initialize the Flask app
 app = Flask(__name__)
 app.config.from_object('config.Config')
