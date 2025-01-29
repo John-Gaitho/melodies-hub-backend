@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 # Importing models
-from models import db, User, Song, Playlist
+from models import db, User, Song, Playlist, PlaylistSong
 
 db = SQLAlchemy
 # Initializing the Flask app
@@ -100,6 +100,7 @@ def create_playlist():
 def get_playlists():
     playlists = Playlist.query.all()
     return jsonify([{'id': playlist.id, 'name': playlist.name, 'user_id': playlist.user_id} for playlist in playlists])
+
 
 
 # to run the app.
