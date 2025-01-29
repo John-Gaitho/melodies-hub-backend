@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 # Importing models
-from models import db, User, Song
+from models import db, User, Song, Playlist
 
 db = SQLAlchemy
 # Initializing the Flask app
@@ -80,3 +80,28 @@ def create_song():
 def get_songs():
     songs = Song.query.all()
     return jsonify([{'id': song.id, 'title': song.title, 'artist': song.artist, 'genre': song.genre} for song in songs])
+
+# Routes for Playlist CRUD operations
+
+# to create a new playlist
+@app.route('/playlists', methods=['POST'])
+def create_playlist():
+    data = request.get_json()
+    name = data.get('name')
+    user_id = data.get('user_id')
+
+    new_playlist = Playlist(name=name, user_id=user_id)
+    db.session.add(new_playlist)
+    db.session.commit()
+    return jsonify({'message': 'Playlist created successfully'}), 201
+
+# to get all playlists
+@app.route('/playlists', methods=['GET'])
+def get_playlists():
+    playlists = Playlist.query.all()
+    return jsonify([{'id': playlist.id, 'name': playlist.name, 'user_id': playlist.user_id} for playlist in playlists])
+
+
+# to run the app.
+if __name__ == '__main__':
+    app.run()
