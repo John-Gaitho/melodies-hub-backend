@@ -1,20 +1,19 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 
-# Importing models
-from models import db, User, Song, Playlist, PlaylistSong
 
-db = SQLAlchemy
-# Initializing the Flask app
+
+# Initialize the Flask app
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 app.config.from_object('config.Config')
+db = SQLAlchemy() 
+db.init_app(app)
 migrate = Migrate(app, db)
+CORS(app)  # to enable Cross-Origin Resource Sharing
 
-
+from models import db, User, Song, Playlist, PlaylistSong # models
 # Routes for User CRUD operations
 
 #to create a new user
@@ -129,4 +128,4 @@ def get_songs_in_playlist(playlist_id):
 
 # to run the app.
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
