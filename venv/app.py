@@ -101,6 +101,27 @@ def get_playlists():
     playlists = Playlist.query.all()
     return jsonify([{'id': playlist.id, 'name': playlist.name, 'user_id': playlist.user_id} for playlist in playlists])
 
+# Routes for PlaylistSong CRUD operations (for managing songs in a playlist)
+
+# to add a song to a playlist
+@app.route('/playlistsongs', methods=['POST'])
+def add_song_to_playlist():
+    data = request.get_json()
+    playlist_id = data.get('playlist_id')
+    song_id = data.get('song_id')
+    order = data.get('order')
+    rating = data.get('rating')
+
+    playlist_song = PlaylistSong(playlist_id=playlist_id, song_id=song_id, order=order, rating=rating)
+    db.session.add(playlist_song)
+    db.session.commit()
+    return jsonify({'message': 'Song added to playlist successfully'}), 201
+
+# to get all songs in a playlist
+@app.route('/playlistsongs/<int:playlist_id>', methods=['GET'])
+def get_songs_in_playlist(playlist_id):
+    playlist_songs = PlaylistSong.query.filter_by(playlist_id=playlist_id).all()
+    return jsonify([{'id': ps.id, 'song_id': ps.song_id, 'order': ps.order, 'rating': ps.rating} for ps in playlist_songs])
 
 
 # to run the app.
