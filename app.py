@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, request 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_restful import Api, Resource
 from flask_cors import CORS
 
 
@@ -11,8 +12,17 @@ db = SQLAlchemy()
 db.init_app(app)
 migrate = Migrate(app, db)
 CORS(app)  # to enable Cross-Origin Resource Sharing
-
+api = Api(app)
 from models import db, User, Song, Playlist, PlaylistSong # models
+
+
+class Home(Resource):
+    def get(self):
+        return {'message': 'WELCOME TO MUSIC MELODIES HUB'}
+
+api.add_resource(Home, '/')
+
+
 # Routes for User CRUD operations
 
 #to create a new user
