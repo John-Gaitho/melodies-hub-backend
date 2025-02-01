@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from flask_cors import CORS
+import os
 
 # Initialize the Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://music_db_22q5_user:nlppdEAb20eVpIc8DdMlQOnWD8La9hfO@dpg-cuea74dds78s73aacav0-a.oregon-postgres.render.com/music_db_22q5"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 from extensions import db
