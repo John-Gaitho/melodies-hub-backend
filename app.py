@@ -1,27 +1,29 @@
-from flask import Flask, request, jsonify, request 
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 from flask_cors import CORS
 
-
 # Initialize the Flask app
 app = Flask(__name__)
-app.config.from_object('config.Config')
-db = SQLAlchemy() 
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://music_db_22q5_user:nlppdEAb20eVpIc8DdMlQOnWD8La9hfO@dpg-cuea74dds78s73aacav0-a.oregon-postgres.render.com/music_db_22q5"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+from extensions import db
 db.init_app(app)
 migrate = Migrate(app, db)
-CORS(app)  # to enable Cross-Origin Resource Sharing
+CORS(app)
 api = Api(app)
-from models import db, User, Song, Playlist, PlaylistSong # models
+
+from models import User, Song, Playlist, PlaylistSong # models
 
 
+# Home Route
 class Home(Resource):
     def get(self):
         return {'message': 'WELCOME TO MUSIC MELODIES HUB'}
 
 api.add_resource(Home, '/')
-
 
 # Routes for User CRUD operations
 
@@ -135,6 +137,8 @@ def get_songs_in_playlist(playlist_id):
     return jsonify([{'id': ps.id, 'song_id': ps.song_id, 'order': ps.order, 'rating': ps.rating} for ps in playlist_songs])
 
 
+
+
 # to run the app.
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+   app.run(debug=True)
